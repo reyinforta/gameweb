@@ -1,0 +1,28 @@
+<svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gameGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="300" height="200" fill="url(#gameGradient)"/>
+  
+  <!-- Game UI Elements -->
+  <rect x="20" y="20" width="260" height="30" fill="rgba(255,255,255,0.2)" rx="5"/>
+  <text x="30" y="40" fill="white" font-family="Arial" font-size="14" font-weight="bold">Game Screenshot 1</text>
+  
+  <!-- Game Elements -->
+  <circle cx="80" cy="100" r="25" fill="#FFD700"/>
+  <rect x="150" y="80" width="40" height="40" fill="#FF6B6B" rx="5"/>
+  <polygon points="220,120 240,80 260,120" fill="#4ECDC4"/>
+  
+  <!-- Score Display -->
+  <rect x="20" y="160" width="100" height="20" fill="rgba(255,255,255,0.3)" rx="3"/>
+  <text x="25" y="175" fill="white" font-family="Arial" font-size="12">Score: 1250</text>
+  
+  <!-- Level Display -->
+  <rect x="180" y="160" width="100" height="20" fill="rgba(255,255,255,0.3)" rx="3"/>
+  <text x="185" y="175" fill="white" font-family="Arial" font-size="12">Level: 5</text>
+</svg>

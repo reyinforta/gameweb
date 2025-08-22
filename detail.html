@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail - Playora App</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzAwN2JmZiIvPgo8cGF0aCBkPSJNOCAxMmg0djRIOHYtNHptNiAwaDR2NGgtNHYtNHptNiAwaDR2NGgtNHYtNHpNOCAxOGg0djRIOHYtNHptNiAwaDR2NGgtNHYtNHptNiAwaDR2NGgtNHYtNHoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="css/templatemo-style.css">
+    <!-- Supabase CDN -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        .detail-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+        .app-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .rating-stars {
+            color: #ffc107;
+        }
+        .feature-badge {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin: 3px;
+            display: inline-block;
+        }
+        .action-buttons {
+            gap: 15px;
+        }
+        .btn-demo {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn-demo:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+            color: white;
+        }
+        .btn-order {
+            background: linear-gradient(45deg, #FF6B6B, #ee5a52);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn-order:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            color: white;
+        }
+        .info-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .screenshot-gallery {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+        .screenshot {
+            min-width: 200px;
+            height: 350px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+        .loading-detail {
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Loader -->
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-film mr-2"></i>
+                Playora
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-1" href="index.html">Aplikasi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-2" href="videos.html">Games</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-3" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-4" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Loading State -->
+    <div id="loadingDetail" class="loading-detail">
+        <div class="text-center">
+            <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <p class="mt-3 tm-text-primary">Memuat detail aplikasi...</p>
+        </div>
+    </div>
+
+    <!-- Detail Content -->
+    <div id="detailContent" style="display: none;">
+        <!-- Hero Section -->
+        <div class="detail-hero">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-3 text-center">
+                        <img id="appIcon" src="" alt="App Icon" class="app-icon">
+                    </div>
+                    <div class="col-md-6">
+                        <h1 id="appTitle" class="mb-3"></h1>
+                        <p id="appDeveloper" class="mb-2 opacity-75"></p>
+                        <div class="d-flex align-items-center mb-3">
+                            <div id="appRating" class="rating-stars me-2"></div>
+                            <span id="appRatingText" class="ms-2"></span>
+                            <span id="appDownloads" class="ms-3 opacity-75"></span>
+                        </div>
+                        <div id="appCategory" class="mb-3"></div>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div id="appPrice" class="h2 mb-3"></div>
+                        <div class="action-buttons d-flex flex-column">
+                            <button id="btnDemo" class="btn btn-demo mb-2">
+                                <i class="fas fa-play me-2"></i>Demo App
+                            </button>
+                            <button id="btnOrder" class="btn btn-order">
+                                <i class="fas fa-shopping-cart me-2"></i>Order Sekarang
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="container mt-5 mb-5">
+            <div class="row">
+                <!-- Left Column -->
+                <div class="col-lg-8">
+                    <!-- Description -->
+                    <div class="info-card">
+                        <h3 class="tm-text-primary mb-3">Deskripsi</h3>
+                        <p id="appDescription" class="tm-text-gray"></p>
+                    </div>
+
+                    <!-- Features -->
+                    <div class="info-card">
+                        <h3 class="tm-text-primary mb-3">Fitur Utama</h3>
+                        <div id="appFeatures"></div>
+                    </div>
+
+                    <!-- Screenshots -->
+                    <div class="info-card">
+                        <h3 class="tm-text-primary mb-3">Screenshot</h3>
+                        <div id="appScreenshots" class="screenshot-gallery">
+                            <!-- Screenshots will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="col-lg-4">
+                    <!-- App Info -->
+                    <div class="info-card">
+                        <h4 class="tm-text-primary mb-3">Informasi Aplikasi</h4>
+                        <div class="row mb-2">
+                            <div class="col-6"><strong>Ukuran:</strong></div>
+                            <div class="col-6" id="appSize"></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6"><strong>Versi:</strong></div>
+                            <div class="col-6" id="appVersion"></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6"><strong>Developer:</strong></div>
+                            <div class="col-6" id="appDeveloperInfo"></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6"><strong>Kategori:</strong></div>
+                            <div class="col-6" id="appCategoryInfo"></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6"><strong>Rating:</strong></div>
+                            <div class="col-6" id="appRatingInfo"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6"><strong>Download:</strong></div>
+                            <div class="col-6" id="appDownloadInfo"></div>
+                        </div>
+                    </div>
+
+                    <!-- Requirements -->
+                    <div class="info-card">
+                        <h4 class="tm-text-primary mb-3">Persyaratan Sistem</h4>
+                        <p id="appRequirements" class="tm-text-gray"></p>
+                    </div>
+
+                    <!-- Related Apps -->
+                    <div class="info-card">
+                        <h4 class="tm-text-primary mb-3">Aplikasi Serupa</h4>
+                        <div id="relatedApps">
+                            <!-- Related apps will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error State -->
+    <div id="errorState" style="display: none;">
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h2 class="tm-text-primary">Aplikasi Tidak Ditemukan</h2>
+                    <p class="tm-text-gray">Maaf, aplikasi yang Anda cari tidak ditemukan.</p>
+                    <a href="index.html" class="btn btn-primary">Kembali ke Beranda</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="tm-bg-gray pt-5 pb-3 tm-text-gray tm-footer">
+        <div class="container-fluid tm-container-small">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 col-12 px-5 mb-5">
+                    <h3 class="tm-text-primary mb-4 tm-footer-title">About Playora</h3>
+                    <p>Solusi praktis untuk Anda yang ingin punya aplikasi atau game sendiri. Desain keren, fitur lengkap, langsung siap upload!</p>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12 px-5 mb-5">
+                    <h3 class="tm-text-primary mb-4 tm-footer-title">Our Links</h3>
+                    <ul class="tm-footer-links pl-0">
+                        <li><a href="#">Advertise</a></li>
+                        <li><a href="#">Support</a></li>
+                        <li><a href="#">Our Company</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12 px-5 mb-5">
+                    <ul class="tm-social-links d-flex justify-content-end pl-0 mb-5">
+                        <li class="mb-2"><a href="https://facebook.com"><i class="fab fa-facebook"></i></a></li>
+                        <li class="mb-2"><a href="https://twitter.com"><i class="fab fa-twitter"></i></a></li>
+                        <li class="mb-2"><a href="https://instagram.com"><i class="fab fa-instagram"></i></a></li>
+                        <li class="mb-2"><a href="https://pinterest.com"><i class="fab fa-pinterest"></i></a></li>
+                    </ul>
+                    <a href="#" class="tm-text-gray text-right d-block mb-2">Terms of Use</a>
+                    <a href="#" class="tm-text-gray text-right d-block">Privacy Policy</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-md-7 col-12 px-5 mb-3">
+                    Copyright 2020 Playora Company. All rights reserved.
+                </div>
+                <div class="col-lg-4 col-md-5 col-12 px-5 text-right">
+                    Designed by <a href="https://templatemo.com" class="tm-text-gray" rel="sponsored" target="_parent">TemplateMo</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/plugins.js"></script>
+    <script src="js/database.js"></script>
+    <script>
+        $(window).on("load", function() {
+            $('body').addClass('loaded');
+        });
+
+        $(document).ready(function() {
+            // Set page type for database.js
+            window.currentPage = 'detail';
+            
+            // Get app ID from URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const appId = urlParams.get('id');
+            
+            if (appId) {
+                loadApplicationDetail(appId);
+            } else {
+                showError();
+            }
+        });
+
+        function loadApplicationDetail(appId) {
+            if (typeof getApplicationById === 'function') {
+                getApplicationById(appId)
+                    .then(app => {
+                        if (app) {
+                            displayApplicationDetail(app);
+                        } else {
+                            showError();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading application:', error);
+                        showError();
+                    });
+            } else {
+                console.error('Database functions not loaded');
+                showError();
+            }
+        }
+
+        function displayApplicationDetail(app) {
+            // Hide loading, show content
+            $('#loadingDetail').hide();
+            $('#detailContent').show();
+            
+            // Update page title
+            document.title = `${app.title} - Playora App`;
+            
+            // Fill in the details
+            $('#appIcon').attr('src', app.image_url);
+            $('#appTitle').text(app.title);
+            $('#appDeveloper').text(`oleh ${app.developer}`);
+            $('#appDescription').text(app.description);
+            
+            // Rating
+            const stars = '★'.repeat(Math.floor(app.rating)) + '☆'.repeat(5 - Math.floor(app.rating));
+            $('#appRating').html(stars);
+            $('#appRatingText').text(`${app.rating}/5`);
+            
+            // Downloads
+            $('#appDownloads').text(`${app.downloads.toLocaleString()} downloads`);
+            
+            // Category
+            const categoryText = app.category === 'app' ? 'Aplikasi' : 'Game';
+            $('#appCategory').html(`<span class="badge badge-primary">${categoryText}</span>`);
+            
+            // Price
+            const priceText = app.price === 0 ? 'GRATIS' : `Rp ${app.price.toLocaleString()}`;
+            $('#appPrice').text(priceText);
+            
+            // Features
+            if (app.features && app.features.length > 0) {
+                const featuresHtml = app.features.map(feature => 
+                    `<span class="feature-badge">${feature}</span>`
+                ).join('');
+                $('#appFeatures').html(featuresHtml);
+            }
+            
+            // App Info
+            $('#appSize').text(`${app.size_mb} MB`);
+            $('#appVersion').text(app.version);
+            $('#appDeveloperInfo').text(app.developer);
+            $('#appCategoryInfo').text(categoryText);
+            $('#appRatingInfo').text(`${app.rating}/5 (${stars})`);
+            $('#appDownloadInfo').text(app.downloads.toLocaleString());
+            $('#appRequirements').text(app.requirements);
+            
+            // Button actions
+            $('#btnDemo').click(function() {
+                if (app.demo_url) {
+                    window.open(app.demo_url, '_blank');
+                } else {
+                    alert('Demo tidak tersedia untuk aplikasi ini.');
+                }
+            });
+            
+            $('#btnOrder').click(function() {
+                orderApplication(app);
+            });
+            
+            // Load related apps
+            loadRelatedApps(app.category, app.id);
+        }
+
+        function loadRelatedApps(category, currentId) {
+            if (typeof getApplications === 'function') {
+                getApplications(category, 4, 0)
+                    .then(apps => {
+                        const relatedApps = apps.filter(app => app.id !== currentId).slice(0, 3);
+                        if (relatedApps.length > 0) {
+                            const relatedHtml = relatedApps.map(app => `
+                                <div class="mb-3">
+                                    <div class="d-flex">
+                                        <img src="${app.image_url}" alt="${app.title}" style="width: 50px; height: 50px; border-radius: 8px; object-fit: cover;">
+                                        <div class="ml-3">
+                                            <h6 class="mb-1"><a href="detail.html?id=${app.id}" class="tm-text-primary">${app.title}</a></h6>
+                                            <small class="tm-text-gray">${app.rating}/5 ★</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('');
+                            $('#relatedApps').html(relatedHtml);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading related apps:', error);
+                    });
+            }
+        }
+
+        function showError() {
+            $('#loadingDetail').hide();
+            $('#errorState').show();
+        }
+    </script>
+</body>
+</html>

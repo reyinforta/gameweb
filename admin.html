@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Playora</title>
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/templatemo-style.css">
+    <style>
+        .admin-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        .admin-nav {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+        .admin-nav .nav-link {
+            color: #495057;
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 5px;
+            margin: 0 0.25rem;
+        }
+        .admin-nav .nav-link.active {
+            background: #007bff;
+            color: white;
+        }
+        .admin-nav .nav-link:hover {
+            background: #e9ecef;
+            color: #007bff;
+        }
+        .admin-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .admin-card .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 1rem 1.5rem;
+        }
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .stats-card h3 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .btn-admin {
+            border-radius: 25px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+        }
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .table th {
+            border-top: none;
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+        .badge {
+            font-size: 0.75rem;
+            padding: 0.5rem 0.75rem;
+        }
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+        }
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Header -->
+    <div class="admin-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1 class="mb-0"><i class="fas fa-cogs"></i> Admin Panel</h1>
+                    <p class="mb-0">Kelola Aplikasi dan Game Playora</p>
+                </div>
+                <div class="col-md-6 text-md-right">
+                    <a href="index.html" class="btn btn-light btn-admin">
+                        <i class="fas fa-home"></i> Kembali ke Website
+                    </a>
+                    <button class="btn btn-outline-light btn-admin ml-2" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Admin Navigation -->
+        <div class="admin-nav">
+            <ul class="nav nav-pills justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#dashboard" data-toggle="pill">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#applications" data-toggle="pill">
+                        <i class="fas fa-list"></i> Daftar Aplikasi
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#add-app" data-toggle="pill">
+                        <i class="fas fa-plus"></i> Tambah Aplikasi
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- Dashboard Tab -->
+            <div class="tab-pane fade show active" id="dashboard">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="stats-card">
+                            <h3 id="totalApps">0</h3>
+                            <p class="mb-0"><i class="fas fa-mobile-alt"></i> Total Aplikasi</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stats-card">
+                            <h3 id="totalGames">0</h3>
+                            <p class="mb-0"><i class="fas fa-gamepad"></i> Total Game</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stats-card">
+                            <h3 id="totalAll">0</h3>
+                            <p class="mb-0"><i class="fas fa-chart-bar"></i> Total Semua</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-chart-line"></i> Statistik Terbaru</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Aplikasi Terbaru</h6>
+                                <div id="recentApps">Loading...</div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Game Terbaru</h6>
+                                <div id="recentGames">Loading...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Applications List Tab -->
+            <div class="tab-pane fade" id="applications">
+                <div class="admin-card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-list"></i> Daftar Aplikasi & Game</h5>
+                        <div>
+                            <select class="form-control form-control-sm" id="categoryFilter" style="width: auto; display: inline-block;">
+                                <option value="">Semua Kategori</option>
+                                <option value="app">Aplikasi</option>
+                                <option value="game">Game</option>
+                            </select>
+                            <button class="btn btn-sm btn-light ml-2" onclick="refreshApplicationsList()">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="loading-spinner" id="appsLoadingSpinner">
+                            <i class="fas fa-spinner fa-spin fa-2x"></i>
+                            <p>Memuat data...</p>
+                        </div>
+                        <div id="applicationsTable"></div>
+                        <div id="pagination" class="d-flex justify-content-center mt-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Application Tab -->
+            <div class="tab-pane fade" id="add-app">
+                <div class="admin-card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-plus"></i> Tambah Aplikasi/Game Baru</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="addAppForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="appTitle">Judul *</label>
+                                        <input type="text" class="form-control" id="appTitle" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="appCategory">Kategori *</label>
+                                        <select class="form-control" id="appCategory" required>
+                                            <option value="">Pilih Kategori</option>
+                                            <option value="app">Aplikasi</option>
+                                            <option value="game">Game</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="appDescription">Deskripsi *</label>
+                                <textarea class="form-control" id="appDescription" rows="3" required></textarea>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="appPrice">Harga *</label>
+                                        <input type="number" class="form-control" id="appPrice" step="0.01" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="appRating">Rating (0-5)</label>
+                                        <input type="number" class="form-control" id="appRating" min="0" max="5" step="0.1">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="appDeveloper">Developer</label>
+                                        <input type="text" class="form-control" id="appDeveloper">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="appImageUrl">URL Gambar Utama</label>
+                                        <input type="url" class="form-control" id="appImageUrl" placeholder="URL gambar untuk tampilan daftar">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="appDetailImageUrl">URL Gambar Detail</label>
+                                        <input type="url" class="form-control" id="appDetailImageUrl" placeholder="URL gambar untuk halaman detail">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="appDemoUrl">URL Demo</label>
+                                        <input type="url" class="form-control" id="appDemoUrl">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="appDownloadUrl">URL Download</label>
+                                        <input type="url" class="form-control" id="appDownloadUrl">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="appDownloadUrl">URL Download</label>
+                                        <input type="url" class="form-control" id="appDownloadUrl">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="appVersion">Versi</label>
+                                        <input type="text" class="form-control" id="appVersion" placeholder="1.0.0">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="appSize">Ukuran</label>
+                                        <input type="text" class="form-control" id="appSize" placeholder="10 MB">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="appFeatures">Fitur (pisahkan dengan koma)</label>
+                                <textarea class="form-control" id="appFeatures" rows="2" placeholder="Fitur 1, Fitur 2, Fitur 3"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="appTags">Tags (pisahkan dengan koma)</label>
+                                <input type="text" class="form-control" id="appTags" placeholder="tag1, tag2, tag3">
+                            </div>
+                            
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-admin">
+                                    <i class="fas fa-save"></i> Simpan Aplikasi
+                                </button>
+                                <button type="reset" class="btn btn-secondary btn-admin ml-2">
+                                    <i class="fas fa-undo"></i> Reset Form
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-edit"></i> Edit Aplikasi</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editAppForm">
+                        <input type="hidden" id="editAppId">
+                        <!-- Form fields sama seperti add form -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="editAppTitle">Judul *</label>
+                                    <input type="text" class="form-control" id="editAppTitle" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="editAppCategory">Kategori *</label>
+                                    <select class="form-control" id="editAppCategory" required>
+                                        <option value="app">Aplikasi</option>
+                                        <option value="game">Game</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editAppDescription">Deskripsi *</label>
+                            <textarea class="form-control" id="editAppDescription" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="editAppPrice">Harga *</label>
+                                    <input type="number" class="form-control" id="editAppPrice" step="0.01" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="editAppRating">Rating (0-5)</label>
+                                    <input type="number" class="form-control" id="editAppRating" min="0" max="5" step="0.1">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="editAppDeveloper">Developer</label>
+                                    <input type="text" class="form-control" id="editAppDeveloper">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="editAppImageUrl">URL Gambar Utama</label>
+                                    <input type="url" class="form-control" id="editAppImageUrl" placeholder="URL gambar untuk tampilan daftar">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="editAppDetailImageUrl">URL Gambar Detail</label>
+                                    <input type="url" class="form-control" id="editAppDetailImageUrl" placeholder="URL gambar untuk halaman detail">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="editAppDemoUrl">URL Demo</label>
+                                    <input type="url" class="form-control" id="editAppDemoUrl">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="editAppDownloadUrl">URL Download</label>
+                                    <input type="url" class="form-control" id="editAppDownloadUrl">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="saveEditApplication()">Simpan Perubahan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel"><i class="fas fa-trash"></i> Konfirmasi Hapus</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Apakah Anda yakin ingin menghapus aplikasi <strong id="deleteAppName"></strong>?</p>
+                    <p class="text-danger"><small>Tindakan ini tidak dapat dibatalkan.</small></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/database.js"></script>
+    
+    <script>
+        // Global variables
+        let currentPage = 1
+        let currentCategory = ''
+        
+        // Check authentication before initializing
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!isLoggedIn()) {
+                window.location.href = 'login.html'
+                return
+            }
+            initializeAdminPanel()
+        })
+        
+        // Check if user is logged in
+        function isLoggedIn() {
+            const sessionLogin = sessionStorage.getItem('adminLogin')
+            const localLogin = localStorage.getItem('adminLogin')
+            
+            if (sessionLogin || localLogin) {
+                try {
+                    const loginData = JSON.parse(sessionLogin || localLogin)
+                    const loginTime = new Date(loginData.loginTime)
+                    const now = new Date()
+                    const hoursDiff = (now - loginTime) / (1000 * 60 * 60)
+                    
+                    // Session expires after 24 hours
+                    if (hoursDiff < 24) {
+                        return true
+                    } else {
+                        // Clear expired session
+                        sessionStorage.removeItem('adminLogin')
+                        localStorage.removeItem('adminLogin')
+                        return false
+                    }
+                } catch (error) {
+                    return false
+                }
+            }
+            
+            return false
+        }
+        
+        // Initialize admin panel
+        function initializeAdminPanel() {
+            loadDashboardStats()
+            loadApplicationsList()
+            
+            // Setup form handlers
+            setupFormHandlers()
+            
+            // Setup category filter
+            document.getElementById('categoryFilter').addEventListener('change', function() {
+                currentCategory = this.value
+                currentPage = 1
+                loadApplicationsList()
+            })
+        }
+        
+        // Load dashboard statistics
+        async function loadDashboardStats() {
+            try {
+                const [appsResult, gamesResult] = await Promise.all([
+                    PlayoraDB.getApplications('app'),
+                    PlayoraDB.getApplications('game')
+                ])
+                
+                const totalApps = appsResult.length
+                const totalGames = gamesResult.length
+                const totalAll = totalApps + totalGames
+                
+                document.getElementById('totalApps').textContent = totalApps
+                document.getElementById('totalGames').textContent = totalGames
+                document.getElementById('totalAll').textContent = totalAll
+                
+                // Load recent items
+                loadRecentItems(appsResult.slice(0, 3), gamesResult.slice(0, 3))
+                
+            } catch (error) {
+                console.error('Error loading dashboard stats:', error)
+            }
+        }
+        
+        // Load recent items
+        function loadRecentItems(recentApps, recentGames) {
+            const appsContainer = document.getElementById('recentApps')
+            const gamesContainer = document.getElementById('recentGames')
+            
+            if (recentApps.length === 0) {
+                appsContainer.innerHTML = '<p class="text-muted">Belum ada aplikasi</p>'
+            } else {
+                appsContainer.innerHTML = recentApps.map(app => `
+                    <div class="d-flex align-items-center mb-2">
+                        <img src="${app.image_url || 'img/img-01.jpg'}" alt="${app.title}" 
+                             style="width: 40px; height: 40px; object-fit: cover; border-radius: 5px;">
+                        <div class="ml-2">
+                            <strong>${app.title}</strong><br>
+                            <small class="text-muted">${formatDate(app.created_at)}</small>
+                        </div>
+                    </div>
+                `).join('')
+            }
+            
+            if (recentGames.length === 0) {
+                gamesContainer.innerHTML = '<p class="text-muted">Belum ada game</p>'
+            } else {
+                gamesContainer.innerHTML = recentGames.map(game => `
+                    <div class="d-flex align-items-center mb-2">
+                        <img src="${game.image_url || 'img/img-01.jpg'}" alt="${game.title}" 
+                             style="width: 40px; height: 40px; object-fit: cover; border-radius: 5px;">
+                        <div class="ml-2">
+                            <strong>${game.title}</strong><br>
+                            <small class="text-muted">${formatDate(game.created_at)}</small>
+                        </div>
+                    </div>
+                `).join('')
+            }
+        }
+        
+        // Load applications list
+        async function loadApplicationsList() {
+            const spinner = document.getElementById('appsLoadingSpinner')
+            const container = document.getElementById('applicationsTable')
+            
+            spinner.style.display = 'block'
+            
+            try {
+                const result = await PlayoraDB.getApplicationsForAdmin(currentPage, 10, currentCategory || null)
+                
+                if (result.success) {
+                    PlayoraDB.renderAdminTable(result.data, container)
+                    renderPagination(result.pagination)
+                } else {
+                    container.innerHTML = `<div class="alert alert-danger">Error: ${result.error}</div>`
+                }
+            } catch (error) {
+                console.error('Error loading applications:', error)
+                container.innerHTML = `<div class="alert alert-danger">Error loading data</div>`
+            } finally {
+                spinner.style.display = 'none'
+            }
+        }
+        
+        // Render pagination
+        function renderPagination(pagination) {
+            const container = document.getElementById('pagination')
+            
+            if (pagination.totalPages <= 1) {
+                container.innerHTML = ''
+                return
+            }
+            
+            let paginationHTML = '<nav><ul class="pagination">'
+            
+            // Previous button
+            if (pagination.page > 1) {
+                paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${pagination.page - 1})">Previous</a></li>`
+            }
+            
+            // Page numbers
+            for (let i = 1; i <= pagination.totalPages; i++) {
+                if (i === pagination.page) {
+                    paginationHTML += `<li class="page-item active"><span class="page-link">${i}</span></li>`
+                } else {
+                    paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${i})">${i}</a></li>`
+                }
+            }
+            
+            // Next button
+            if (pagination.page < pagination.totalPages) {
+                paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${pagination.page + 1})">Next</a></li>`
+            }
+            
+            paginationHTML += '</ul></nav>'
+            container.innerHTML = paginationHTML
+        }
+        
+        // Change page
+        function changePage(page) {
+            currentPage = page
+            loadApplicationsList()
+        }
+        
+        // Refresh applications list
+        function refreshApplicationsList() {
+            loadApplicationsList()
+            loadDashboardStats()
+        }
+        
+        // Setup form handlers
+        function setupFormHandlers() {
+            document.getElementById('addAppForm').addEventListener('submit', async function(e) {
+                e.preventDefault()
+                await addNewApplication()
+            })
+        }
+        
+        // Add new application
+        async function addNewApplication() {
+            const formData = {
+                title: document.getElementById('appTitle').value,
+                description: document.getElementById('appDescription').value,
+                category: document.getElementById('appCategory').value,
+                price: parseFloat(document.getElementById('appPrice').value),
+                rating: parseFloat(document.getElementById('appRating').value) || 0,
+                developer: document.getElementById('appDeveloper').value,
+                image_url: document.getElementById('appImageUrl').value,
+                detail_image_url: document.getElementById('appDetailImageUrl').value,
+                demo_url: document.getElementById('appDemoUrl').value,
+                download_url: document.getElementById('appDownloadUrl').value,
+                version: document.getElementById('appVersion').value || '1.0.0',
+                size: document.getElementById('appSize').value,
+                features: document.getElementById('appFeatures').value.split(',').map(f => f.trim()).filter(f => f),
+                tags: document.getElementById('appTags').value.split(',').map(t => t.trim()).filter(t => t)
+            }
+            
+            try {
+                const result = await PlayoraDB.addApplication(formData)
+                
+                if (result.success) {
+                    alert('Aplikasi berhasil ditambahkan!')
+                    document.getElementById('addAppForm').reset()
+                    loadApplicationsList()
+                    loadDashboardStats()
+                    
+                    // Switch to applications tab
+                    $('a[href="#applications"]').tab('show')
+                } else {
+                    alert('Error: ' + result.error)
+                }
+            } catch (error) {
+                console.error('Error adding application:', error)
+                alert('Terjadi kesalahan saat menambah aplikasi')
+            }
+        }
+        
+        // Edit application
+        async function editApplication(id) {
+            try {
+                const app = await PlayoraDB.getApplicationById(id)
+                
+                if (app) {
+                    // Fill edit form
+                    document.getElementById('editAppId').value = app.id
+                    document.getElementById('editAppTitle').value = app.title
+                    document.getElementById('editAppCategory').value = app.category
+                    document.getElementById('editAppDescription').value = app.description
+                    document.getElementById('editAppPrice').value = app.price
+                    document.getElementById('editAppRating').value = app.rating
+                    document.getElementById('editAppDeveloper').value = app.developer || ''
+                    document.getElementById('editAppImageUrl').value = app.image_url || ''
+                    document.getElementById('editAppDetailImageUrl').value = app.detail_image_url || ''
+                    document.getElementById('editAppDemoUrl').value = app.demo_url || ''
+                    document.getElementById('editAppDownloadUrl').value = app.download_url || ''
+                    
+                    // Show modal
+                    $('#editModal').modal('show')
+                }
+            } catch (error) {
+                console.error('Error loading application for edit:', error)
+                alert('Error loading application data')
+            }
+        }
+        
+        // Save edit application
+        async function saveEditApplication() {
+            const id = document.getElementById('editAppId').value
+            const formData = {
+                title: document.getElementById('editAppTitle').value,
+                description: document.getElementById('editAppDescription').value,
+                category: document.getElementById('editAppCategory').value,
+                price: parseFloat(document.getElementById('editAppPrice').value),
+                rating: parseFloat(document.getElementById('editAppRating').value) || 0,
+                developer: document.getElementById('editAppDeveloper').value,
+                image_url: document.getElementById('editAppImageUrl').value,
+                detail_image_url: document.getElementById('editAppDetailImageUrl').value,
+                demo_url: document.getElementById('editAppDemoUrl').value,
+                download_url: document.getElementById('editAppDownloadUrl').value
+            }
+            
+            try {
+                const result = await PlayoraDB.updateApplication(id, formData)
+                
+                if (result.success) {
+                    alert('Aplikasi berhasil diupdate!')
+                    $('#editModal').modal('hide')
+                    loadApplicationsList()
+                    loadDashboardStats()
+                } else {
+                    alert('Error: ' + result.error)
+                }
+            } catch (error) {
+                console.error('Error updating application:', error)
+                alert('Terjadi kesalahan saat mengupdate aplikasi')
+            }
+        }
+        
+        // Confirm delete application
+        function confirmDeleteApplication(id, title) {
+            document.getElementById('deleteAppName').textContent = title
+            document.getElementById('confirmDeleteBtn').onclick = () => deleteApplication(id)
+            $('#deleteModal').modal('show')
+        }
+        
+        // Delete application
+        async function deleteApplication(id) {
+            try {
+                console.log('Starting delete process for ID:', id)
+                const result = await PlayoraDB.deleteApplication(id)
+                
+                if (result.success) {
+                    console.log('Delete successful:', result)
+                    alert('Aplikasi berhasil dihapus!')
+                    $('#deleteModal').modal('hide')
+                    
+                    // Refresh data without page reload
+                    await loadApplicationsList()
+                    await loadDashboardStats()
+                    
+                    console.log('Data refreshed after delete')
+                } else {
+                    console.error('Delete failed:', result.error)
+                    alert('Error: ' + result.error)
+                }
+            } catch (error) {
+                console.error('Error deleting application:', error)
+                alert('Terjadi kesalahan saat menghapus aplikasi: ' + error.message)
+            }
+        }
+        
+        // Logout function
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                sessionStorage.removeItem('adminLogin')
+                localStorage.removeItem('adminLogin')
+                window.location.href = 'login.html'
+            }
+        }
+    </script>
+</body>
+</html>

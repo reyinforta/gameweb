@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Playora</title>
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/templatemo-style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Open Sans', sans-serif;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .login-header h2 {
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .login-header p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+        }
+        
+        .login-body {
+            padding: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .input-group {
+            position: relative;
+        }
+        
+        .input-group-text {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            z-index: 10;
+        }
+        
+        .form-control.with-icon {
+            padding-left: 3rem;
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 25px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            color: white;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        
+        .btn-login:disabled {
+            opacity: 0.6;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .alert {
+            border-radius: 10px;
+            border: none;
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        .back-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .loading-spinner {
+            display: none;
+        }
+        
+        .demo-credentials {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+        
+        .demo-credentials h6 {
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+        
+        .demo-credentials code {
+            background: #e9ecef;
+            padding: 0.25rem 0.5rem;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h2><i class="fas fa-shield-alt"></i> Admin Login</h2>
+            <p>Masuk ke Panel Admin Playora</p>
+        </div>
+        
+        <div class="login-body">
+            <!-- Admin Credentials -->
+            <div class="demo-credentials">
+                <h6><i class="fas fa-info-circle"></i> Admin Credentials:</h6>
+                <p class="mb-1">Username: <code>erlangga86</code></p>
+                <p class="mb-0">Password: <code>Alumindo86</code></p>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <input type="text" class="form-control with-icon" id="username" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <input type="password" class="form-control with-icon" id="password" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="rememberMe">
+                        <label class="custom-control-label" for="rememberMe">Ingat saya</label>
+                    </div>
+                </div>
+                
+                <div id="loginAlert"></div>
+                
+                <button type="submit" class="btn btn-login" id="loginBtn">
+                    <span class="login-text">Masuk</span>
+                    <span class="loading-spinner">
+                        <i class="fas fa-spinner fa-spin"></i> Memproses...
+                    </span>
+                </button>
+            </form>
+            
+            <div class="back-link">
+                <a href="index.html">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Website
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Admin credentials
+        const ADMIN_CREDENTIALS = {
+            username: 'erlangga86',
+            password: 'Alumindo86'
+        }
+        
+        // Check if already logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            if (isLoggedIn()) {
+                window.location.href = 'admin.html'
+            }
+            
+            // Auto-fill admin credentials
+            document.getElementById('username').value = 'erlangga86'
+            document.getElementById('password').value = 'Alumindo86'
+        })
+        
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault()
+            handleLogin()
+        })
+        
+        // Handle login
+        async function handleLogin() {
+            const username = document.getElementById('username').value.trim()
+            const password = document.getElementById('password').value
+            const rememberMe = document.getElementById('rememberMe').checked
+            
+            // Show loading state
+            setLoadingState(true)
+            clearAlert()
+            
+            // Simulate API call delay
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            
+            // Simple authentication check
+            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                // Login successful
+                showAlert('Login berhasil! Mengalihkan ke admin panel...', 'success')
+                
+                // Store login state
+                const loginData = {
+                    username: username,
+                    loginTime: new Date().toISOString(),
+                    rememberMe: rememberMe
+                }
+                
+                if (rememberMe) {
+                    localStorage.setItem('adminLogin', JSON.stringify(loginData))
+                } else {
+                    sessionStorage.setItem('adminLogin', JSON.stringify(loginData))
+                }
+                
+                // Redirect to admin panel
+                setTimeout(() => {
+                    window.location.href = 'admin.html'
+                }, 1500)
+                
+            } else {
+                // Login failed
+                showAlert('Username atau password salah!', 'danger')
+                setLoadingState(false)
+            }
+        }
+        
+        // Check if user is logged in
+        function isLoggedIn() {
+            const sessionLogin = sessionStorage.getItem('adminLogin')
+            const localLogin = localStorage.getItem('adminLogin')
+            
+            if (sessionLogin || localLogin) {
+                try {
+                    const loginData = JSON.parse(sessionLogin || localLogin)
+                    const loginTime = new Date(loginData.loginTime)
+                    const now = new Date()
+                    const hoursDiff = (now - loginTime) / (1000 * 60 * 60)
+                    
+                    // Session expires after 24 hours
+                    if (hoursDiff < 24) {
+                        return true
+                    } else {
+                        // Clear expired session
+                        sessionStorage.removeItem('adminLogin')
+                        localStorage.removeItem('adminLogin')
+                        return false
+                    }
+                } catch (error) {
+                    return false
+                }
+            }
+            
+            return false
+        }
+        
+        // Set loading state
+        function setLoadingState(loading) {
+            const btn = document.getElementById('loginBtn')
+            const loginText = btn.querySelector('.login-text')
+            const spinner = btn.querySelector('.loading-spinner')
+            
+            if (loading) {
+                btn.disabled = true
+                loginText.style.display = 'none'
+                spinner.style.display = 'inline'
+            } else {
+                btn.disabled = false
+                loginText.style.display = 'inline'
+                spinner.style.display = 'none'
+            }
+        }
+        
+        // Show alert
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('loginAlert')
+            alertContainer.innerHTML = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span>&times;</span>
+                    </button>
+                </div>
+            `
+        }
+        
+        // Clear alert
+        function clearAlert() {
+            document.getElementById('loginAlert').innerHTML = ''
+        }
+        
+        // Handle Enter key
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('loginForm').dispatchEvent(new Event('submit'))
+            }
+        })
+    </script>
+</body>
+</html>

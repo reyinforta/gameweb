@@ -9,7 +9,32 @@ class AnalyticsTracker {
         this.startTime = Date.now();
         this.supabaseUrl = 'https://your-project.supabase.co'; // Ganti dengan URL Supabase Anda
         this.supabaseKey = 'your-anon-key'; // Ganti dengan anon key Anda
+        this.waitForSupabase();
+    }
+
+    // Wait for Supabase client to be available
+    async waitForSupabase() {
+        // Temporarily disable Supabase analytics completely
+        console.warn('Analytics disabled - using localStorage fallback only');
         this.init();
+        return;
+        
+        // Original code commented out to prevent Supabase errors
+        // let attempts = 0;
+        // const maxAttempts = 50; // Wait up to 5 seconds
+        // 
+        // while (attempts < maxAttempts) {
+        //     if (typeof supabase !== 'undefined') {
+        //         this.init();
+        //         return;
+        //     }
+        //     await new Promise(resolve => setTimeout(resolve, 100));
+        //     attempts++;
+        // }
+        // 
+        // // If Supabase is not available after waiting, still initialize
+        // console.warn('Supabase client not found, using localStorage fallback');
+        // this.init();
     }
 
     // Generate unique session ID
@@ -68,6 +93,9 @@ class AnalyticsTracker {
     async trackPageView() {
         try {
             const visitorInfo = this.getVisitorInfo();
+            // Don't include event fields for page views
+            delete visitorInfo.event_name;
+            delete visitorInfo.event_data;
             await this.sendToDatabase(visitorInfo);
         } catch (error) {
             console.error('Analytics tracking error:', error);
@@ -77,20 +105,18 @@ class AnalyticsTracker {
     // Send data to database
     async sendToDatabase(data) {
         try {
-            // Jika menggunakan Supabase
-            if (window.supabase) {
-                const { error } = await window.supabase
-                    .from('visitor_logs')
-                    .insert([data]);
-                
-                if (error) throw error;
-            } else {
-                // Fallback: simpan ke localStorage untuk development
+            // Temporarily disable Supabase analytics to prevent errors
+            // if (typeof supabase !== 'undefined') {
+            //     const { error } = await supabase
+            //         .from('visitor_logs')
+            //         .insert([data]);
+            //     
+            //     if (error) throw error;
+            // } else {
                 this.saveToLocalStorage(data);
-            }
+            // }
         } catch (error) {
             console.error('Failed to send analytics data:', error);
-            // Fallback: simpan ke localStorage
             this.saveToLocalStorage(data);
         }
     }
@@ -114,13 +140,20 @@ class AnalyticsTracker {
 
     // Track custom events
     trackEvent(eventName, eventData = {}) {
-        const eventInfo = {
-            ...this.getVisitorInfo(),
-            event_name: eventName,
-            event_data: eventData
-        };
-        
-        this.sendToDatabase(eventInfo);
+        try {
+            const basicInfo = {
+                page_url: window.location.pathname,
+                page_title: document.title,
+                session_id: this.sessionId,
+                visit_timestamp: new Date().toISOString(),
+                event_name: eventName,
+                event_data: eventData
+            };
+            
+            this.sendToDatabase(basicInfo);
+        } catch (error) {
+            console.error('Event tracking error:', error);
+        }
     }
 
     // Setup event listeners

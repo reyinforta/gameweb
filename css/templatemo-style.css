@@ -12,10 +12,15 @@ https://templatemo.com/tm-556-catalog-z
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1001;
+    z-index: 1000;
+    display: none !important; /* Hide loader completely */
+    visibility: hidden !important;
+    opacity: 0 !important;
 }
 #loader {
-    display: block;
+    display: none !important; /* Hide loader completely */
+    visibility: hidden !important;
+    opacity: 0 !important;
     position: relative;
     left: 50%;
     top: 50%;
@@ -88,6 +93,9 @@ https://templatemo.com/tm-556-catalog-z
     }
 
     #loader-wrapper .loader-section {
+        display: none !important; /* Hide loader sections completely */
+        visibility: hidden !important;
+        opacity: 0 !important;
         position: fixed;
         top: 0;
         width: 51%;

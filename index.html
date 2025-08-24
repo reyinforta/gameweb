@@ -19,14 +19,7 @@ https://templatemo.com/tm-556-catalog-z
 -->
 </head>
 <body>
-    <!-- Page Loader -->
-    <div id="loader-wrapper">
-        <div id="loader"></div>
-
-        <div class="loader-section section-left"></div>
-        <div class="loader-section section-right"></div>
-
-    </div>
+    <!-- Page Loader - REMOVED -->
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
@@ -91,15 +84,7 @@ https://templatemo.com/tm-556-catalog-z
                 </div>
             </div>
         </div>
-        <!-- Loading indicator -->
-        <div id="loadingIndicator" class="row">
-            <div class="col-12 text-center">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-                <p class="mt-2">Memuat data...</p>
-            </div>
-        </div>
+        <!-- Loading indicator - REMOVED -->
         
         <!-- Applications container -->
         <div class="row tm-mb-90 tm-gallery" id="applicationsContainer">
@@ -115,25 +100,13 @@ https://templatemo.com/tm-556-catalog-z
         </div>
         
         <!-- Pagination -->
-        <div class="row" id="paginationContainer" style="display: none;">
-            <div class="col-12 d-flex justify-content-center">
-                <nav aria-label="Page navigation">
-                    <ul class="pagination" id="paginationList">
-                        <!-- Pagination akan dibuat secara dinamis -->
-                    </ul>
-                </nav>
-            </div>
-        </div> <!-- row -->
-        <div class="row tm-mb-90">
+        <div class="row tm-mb-90" id="paginationContainer" style="display: none;">
             <div class="col-12 d-flex justify-content-between align-items-center tm-paging-col">
-                <a href="javascript:void(0);" class="btn btn-primary tm-btn-prev mb-2 disabled">Previous</a>
-                <div class="tm-paging d-flex">
-                    <a href="javascript:void(0);" class="active tm-paging-link">1</a>
-                    <a href="javascript:void(0);" class="tm-paging-link">2</a>
-                    <a href="javascript:void(0);" class="tm-paging-link">3</a>
-                    <a href="javascript:void(0);" class="tm-paging-link">4</a>
+                <button id="prevBtn" class="btn btn-primary tm-btn-prev mb-2" disabled>Previous</button>
+                <div class="tm-paging d-flex" id="paginationNumbers">
+                    <!-- Pagination numbers will be generated here -->
                 </div>
-                <a href="javascript:void(0);" class="btn btn-primary tm-btn-next">Next Page</a>
+                <button id="nextBtn" class="btn btn-primary tm-btn-next">Next Page</button>
             </div>            
         </div>
     </div> <!-- container-fluid, tm-container-content -->
@@ -167,10 +140,10 @@ https://templatemo.com/tm-556-catalog-z
             </div>
             <div class="row">
                 <div class="col-lg-8 col-md-7 col-12 px-5 mb-3">
-                    Copyright 2020 Playora Company. All rights reserved.
+                    Copyright 2025 Playora Company. All rights reserved.
                 </div>
                 <div class="col-lg-4 col-md-5 col-12 px-5 text-right">
-                    Designed by <a href="https://templatemo.com" class="tm-text-gray" rel="sponsored" target="_parent">TemplateMo</a>
+                    
                 </div>
             </div>
         </div>
@@ -180,13 +153,25 @@ https://templatemo.com/tm-556-catalog-z
     <script src="js/plugins.js"></script>
     <script src="js/database.js"></script>
     <script>
+        // Hide loader when page is loaded (with fallback)
+        function hideLoader() {
+            document.body.classList.add('loaded');
+        }
+        
+        // Multiple ways to ensure loader disappears
         $(window).on("load", function() {
             $('body').addClass('loaded');
         });
         
+        // Fallback with vanilla JS
+        window.addEventListener('load', hideLoader);
+        
+        // Force hide after 3 seconds as backup
+        setTimeout(hideLoader, 3000);
+        
         // Initialize database when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            // Load only applications (not games)
+            // Load only applications (not games) - consistent loading
             initializeDatabase('app')
             checkAdminStatus()
         })

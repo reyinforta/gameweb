@@ -11,86 +11,40 @@
     <!-- Supabase CDN -->
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
-        .detail-hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 300px;
-            display: flex;
-            align-items: center;
-            color: white;
-        }
         .app-icon {
-            width: 120px;
-            height: 120px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            width: 200px;
+            height: 200px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         .rating-stars {
             color: #ffc107;
         }
-        .feature-badge {
-            background: #e3f2fd;
-            color: #1976d2;
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.85em;
-            margin: 3px;
-            display: inline-block;
-        }
-        .action-buttons {
-            gap: 15px;
-        }
-        .btn-demo {
-            background: linear-gradient(45deg, #4CAF50, #45a049);
-            border: none;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        .btn-demo:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
-            color: white;
-        }
-        .btn-order {
-            background: linear-gradient(45deg, #FF6B6B, #ee5a52);
-            border: none;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        .btn-order:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
-            color: white;
-        }
         .info-card {
             background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-        .screenshot-gallery {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding: 10px 0;
-        }
-        .screenshot {
-            min-width: 200px;
-            height: 350px;
             border-radius: 10px;
-            object-fit: cover;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
         }
         .loading-detail {
             min-height: 500px;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        .navbar-toggler {
+            border: none;
+            padding: 4px 8px;
+        }
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+        .ms-1 {
+            margin-left: 0.25rem;
+        }
+        #detailContent {
+            padding-top: 20px;
         }
     </style>
 </head>
@@ -144,106 +98,43 @@
     <!-- Detail Content -->
     <div id="detailContent" style="display: none;">
         <!-- Hero Section -->
-        <div class="detail-hero">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-3 text-center">
-                        <img id="appIcon" src="" alt="App Icon" class="app-icon">
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-md-4 text-center mb-4">
+                    <img id="appIcon" src="" alt="App Icon" class="app-icon" style="width: 200px; height: 200px; border-radius: 15px;">
+                </div>
+                <div class="col-md-8">
+                    <h1 id="appTitle" class="mb-2 tm-text-primary"></h1>
+                    <p id="appCategory" class="mb-2 tm-text-gray"></p>
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="tm-text-gray">Rating: </span>
+                        <span id="appRatingText" class="ms-1 tm-text-primary"></span>
+                        <span id="appRating" class="rating-stars ms-1"></span>
                     </div>
-                    <div class="col-md-6">
-                        <h1 id="appTitle" class="mb-3"></h1>
-                        <p id="appDeveloper" class="mb-2 opacity-75"></p>
-                        <div class="d-flex align-items-center mb-3">
-                            <div id="appRating" class="rating-stars me-2"></div>
-                            <span id="appRatingText" class="ms-2"></span>
-                            <span id="appDownloads" class="ms-3 opacity-75"></span>
-                        </div>
-                        <div id="appCategory" class="mb-3"></div>
+                    <div id="appPrice" class="h3 mb-3 tm-text-primary"></div>
+                    <div class="action-buttons mb-4">
+                        <button class="btn btn-primary btn-lg me-3 mb-2" id="btnOrder">Order App</button>
+                        <button class="btn btn-outline-primary btn-lg mb-2" id="btnDemo">Demo App</button>
                     </div>
-                    <div class="col-md-3 text-center">
-                        <div id="appPrice" class="h2 mb-3"></div>
-                        <div class="action-buttons d-flex flex-column">
-                            <button id="btnDemo" class="btn btn-demo mb-2">
-                                <i class="fas fa-play me-2"></i>Demo App
-                            </button>
-                            <button id="btnOrder" class="btn btn-order">
-                                <i class="fas fa-shopping-cart me-2"></i>Order Sekarang
-                            </button>
-                        </div>
+                    <div id="appFeatures" class="mb-3"></div>
+                    <div class="mt-4">
+                        <p id="appDescription" class="tm-text-gray"></p>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Main Content -->
-        <div class="container mt-5 mb-5">
+        <div class="container mt-4 mb-5">
             <div class="row">
-                <!-- Left Column -->
-                <div class="col-lg-8">
-                    <!-- Description -->
-                    <div class="info-card">
-                        <h3 class="tm-text-primary mb-3">Deskripsi</h3>
-                        <p id="appDescription" class="tm-text-gray"></p>
-                    </div>
-
-                    <!-- Features -->
-                    <div class="info-card">
-                        <h3 class="tm-text-primary mb-3">Fitur Utama</h3>
-                        <div id="appFeatures"></div>
-                    </div>
-
-                    <!-- Screenshots -->
-                    <div class="info-card">
-                        <h3 class="tm-text-primary mb-3">Screenshot</h3>
-                        <div id="appScreenshots" class="screenshot-gallery">
-                            <!-- Screenshots will be loaded here -->
-                        </div>
+                <div class="col-md-8">
+                    <div id="appScreenshots" class="mb-4">
+                        <!-- Screenshots will be loaded here -->
                     </div>
                 </div>
-
-                <!-- Right Column -->
-                <div class="col-lg-4">
-                    <!-- App Info -->
+                <div class="col-md-4">
                     <div class="info-card">
-                        <h4 class="tm-text-primary mb-3">Informasi Aplikasi</h4>
-                        <div class="row mb-2">
-                            <div class="col-6"><strong>Ukuran:</strong></div>
-                            <div class="col-6" id="appSize"></div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-6"><strong>Versi:</strong></div>
-                            <div class="col-6" id="appVersion"></div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-6"><strong>Developer:</strong></div>
-                            <div class="col-6" id="appDeveloperInfo"></div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-6"><strong>Kategori:</strong></div>
-                            <div class="col-6" id="appCategoryInfo"></div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-6"><strong>Rating:</strong></div>
-                            <div class="col-6" id="appRatingInfo"></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6"><strong>Download:</strong></div>
-                            <div class="col-6" id="appDownloadInfo"></div>
-                        </div>
-                    </div>
-
-                    <!-- Requirements -->
-                    <div class="info-card">
-                        <h4 class="tm-text-primary mb-3">Persyaratan Sistem</h4>
-                        <p id="appRequirements" class="tm-text-gray"></p>
-                    </div>
-
-                    <!-- Related Apps -->
-                    <div class="info-card">
-                        <h4 class="tm-text-primary mb-3">Aplikasi Serupa</h4>
-                        <div id="relatedApps">
-                            <!-- Related apps will be loaded here -->
-                        </div>
+                        <p class="tm-text-gray mb-3">Ditambahkan: <span id="appAddedDate"></span></p>
                     </div>
                 </div>
             </div>
@@ -293,10 +184,10 @@
             </div>
             <div class="row">
                 <div class="col-lg-8 col-md-7 col-12 px-5 mb-3">
-                    Copyright 2020 Playora Company. All rights reserved.
+                    Copyright 2025 Playora Company. All rights reserved.
                 </div>
                 <div class="col-lg-4 col-md-5 col-12 px-5 text-right">
-                    Designed by <a href="https://templatemo.com" class="tm-text-gray" rel="sponsored" target="_parent">TemplateMo</a>
+
                 </div>
             </div>
         </div>
@@ -355,43 +246,53 @@
             // Fill in the details
             $('#appIcon').attr('src', app.image_url);
             $('#appTitle').text(app.title);
-            $('#appDeveloper').text(`oleh ${app.developer}`);
-            $('#appDescription').text(app.description);
             
             // Rating
-            const stars = '★'.repeat(Math.floor(app.rating)) + '☆'.repeat(5 - Math.floor(app.rating));
+            const stars = '⭐';
             $('#appRating').html(stars);
             $('#appRatingText').text(`${app.rating}/5`);
             
-            // Downloads
-            $('#appDownloads').text(`${app.downloads.toLocaleString()} downloads`);
-            
             // Category
             const categoryText = app.category === 'app' ? 'Aplikasi' : 'Game';
-            $('#appCategory').html(`<span class="badge badge-primary">${categoryText}</span>`);
+            $('#appCategory').text(categoryText);
             
             // Price
             const priceText = app.price === 0 ? 'GRATIS' : `Rp ${app.price.toLocaleString()}`;
             $('#appPrice').text(priceText);
             
-            // Features
+            // Description
+            $('#appDescription').html(app.description);
+            
+            // Features - display as simple list
             if (app.features && app.features.length > 0) {
                 const featuresHtml = app.features.map(feature => 
-                    `<span class="feature-badge">${feature}</span>`
+                    `<p class="tm-text-gray mb-1">- ${feature}</p>`
                 ).join('');
                 $('#appFeatures').html(featuresHtml);
             }
             
-            // App Info
-            $('#appSize').text(`${app.size_mb} MB`);
-            $('#appVersion').text(app.version);
-            $('#appDeveloperInfo').text(app.developer);
-            $('#appCategoryInfo').text(categoryText);
-            $('#appRatingInfo').text(`${app.rating}/5 (${stars})`);
-            $('#appDownloadInfo').text(app.downloads.toLocaleString());
-            $('#appRequirements').text(app.requirements);
+            // Screenshots - display main image
+            if (app.detail_image_url) {
+                $('#appScreenshots').html(`<img src="${app.detail_image_url}" alt="${app.title} Screenshot" class="img-fluid rounded" style="width: 100%; max-height: 400px; object-fit: cover;">`);
+            } else {
+                $('#appScreenshots').html(`<img src="${app.image_url}" alt="${app.title} Screenshot" class="img-fluid rounded" style="width: 100%; max-height: 400px; object-fit: cover;">`);
+            }
             
-            // Button actions
+            // Added date
+            const currentDate = new Date().toLocaleDateString('id-ID', { 
+                day: 'numeric', 
+                month: 'long', 
+                year: 'numeric' 
+            });
+            
+            // Setup Order button WhatsApp functionality
+            $('#btnOrder').click(function() {
+                const message = `Halo, saya tertarik untuk memesan aplikasi *${app.title}* dengan harga ${priceText}. Bisa tolong berikan informasi lebih lanjut?`;
+                const whatsappUrl = `https://wa.me/62083896113043?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
+            });
+            
+            // Setup Demo button functionality
             $('#btnDemo').click(function() {
                 if (app.demo_url) {
                     window.open(app.demo_url, '_blank');
@@ -399,40 +300,10 @@
                     alert('Demo tidak tersedia untuk aplikasi ini.');
                 }
             });
-            
-            $('#btnOrder').click(function() {
-                orderApplication(app);
-            });
-            
-            // Load related apps
-            loadRelatedApps(app.category, app.id);
+            $('#appAddedDate').text(currentDate);
         }
 
-        function loadRelatedApps(category, currentId) {
-            if (typeof getApplications === 'function') {
-                getApplications(category, 4, 0)
-                    .then(apps => {
-                        const relatedApps = apps.filter(app => app.id !== currentId).slice(0, 3);
-                        if (relatedApps.length > 0) {
-                            const relatedHtml = relatedApps.map(app => `
-                                <div class="mb-3">
-                                    <div class="d-flex">
-                                        <img src="${app.image_url}" alt="${app.title}" style="width: 50px; height: 50px; border-radius: 8px; object-fit: cover;">
-                                        <div class="ml-3">
-                                            <h6 class="mb-1"><a href="detail.html?id=${app.id}" class="tm-text-primary">${app.title}</a></h6>
-                                            <small class="tm-text-gray">${app.rating}/5 ★</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            `).join('');
-                            $('#relatedApps').html(relatedHtml);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error loading related apps:', error);
-                    });
-            }
-        }
+
 
         function showError() {
             $('#loadingDetail').hide();

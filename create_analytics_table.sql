@@ -17,7 +17,9 @@ CREATE TABLE IF NOT EXISTS visitor_logs (
     city VARCHAR(100),
     device_type VARCHAR(50), -- desktop, mobile, tablet
     browser VARCHAR(100),
-    os VARCHAR(100)
+    os VARCHAR(100),
+    event_name VARCHAR(100), -- untuk tracking events
+    event_data JSONB -- untuk data tambahan events
 );
 
 -- Buat index untuk performa query yang lebih baik

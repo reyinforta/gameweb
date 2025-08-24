@@ -18,7 +18,7 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
  * @param {number} limit - jumlah data yang diambil
  * @param {number} offset - offset untuk pagination
  */
-async function getApplications(category = null, limit = 12, offset = 0) {
+async function getApplications(category = null, limit = 6, offset = 0) {
     try {
         let query = supabase
             .from('applications')
@@ -186,42 +186,9 @@ function renderApplications(applications) {
  * Render detail aplikasi untuk halaman detail
  * @param {Object} app - data aplikasi
  */
-function renderApplicationDetail(app) {
-    if (!app) {
-        document.body.innerHTML = '<div class="container mt-5"><h2>Aplikasi tidak ditemukan</h2></div>'
-        return
-    }
-    
-    const detailContainer = document.querySelector('.detail-container') || document.body
-    
-    detailContainer.innerHTML = `
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-lg-6">
-                    <img src="${app.detail_image_url || app.image_url || 'img/img-01.jpg'}" alt="${app.title}" class="img-fluid rounded">
-                </div>
-                <div class="col-lg-6">
-                    <h1 class="tm-text-primary">${app.title}</h1>
-                    <p class="tm-text-gray mb-3">${app.category === 'app' ? 'Aplikasi' : 'Game'}</p>
-                    <div class="mb-3">
-                        <span class="tm-text-gray">Rating: ${app.rating || 0}/5 ⭐</span>
-                    </div>
-                    <h3 class="tm-text-primary mb-3">${formatPrice(app.price)}</h3>
-                    <p class="tm-text-gray-dark mb-4">${app.description || 'Deskripsi tidak tersedia.'}</p>
-                    
-                    <div class="d-flex gap-3">
-                        ${app.demo_url ? `<a href="${app.demo_url}" target="_blank" class="btn btn-outline-primary">Demo App</a>` : ''}
-                        <button class="btn btn-primary" onclick="orderApplication(${app.id})">Order Sekarang</button>
-                    </div>
-                    
-                    <div class="mt-4">
-                        <small class="tm-text-gray">Ditambahkan: ${formatDate(app.created_at)}</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `
-}
+// Fungsi renderApplicationDetail sudah tidak digunakan lagi
+// Detail page sekarang menggunakan displayApplicationDetail di detail.html
+// function renderApplicationDetail(app) { ... } - DEPRECATED
 
 // ===================================
 // FUNGSI HELPER
@@ -274,27 +241,8 @@ function orderApplication(appId) {
 /**
  * Load data saat halaman dimuat
  */
-document.addEventListener('DOMContentLoaded', async () => {
-    // Cek apakah ini halaman detail
-    const urlParams = new URLSearchParams(window.location.search)
-    const appId = urlParams.get('id')
-    
-    if (appId) {
-        // Halaman detail
-        const app = await getApplicationById(parseInt(appId))
-        renderApplicationDetail(app)
-    } else {
-        // Halaman utama
-        const applications = await getApplications()
-        renderApplications(applications)
-        
-        // Setup search functionality
-        setupSearch()
-        
-        // Setup category filters
-        setupCategoryFilters()
-    }
-})
+// DOMContentLoaded event listener removed to prevent race condition
+// Page initialization is now handled by individual pages
 
 /**
  * Setup fungsi search
@@ -366,6 +314,9 @@ async function initializeDatabase(category = null) {
         } else {
             renderApplications(applications)
         }
+        
+        // Show pagination after data is loaded
+        showPagination(category)
         
         // Setup search with category filter
         setupSearchWithCategory(category)
@@ -441,6 +392,71 @@ function setupSearchWithCategory(category) {
                 renderApplications(results)
             }
         })
+    }
+    
+    // Setup pagination buttons
+    setupPaginationButtons(category)
+}
+
+/**
+ * Setup pagination buttons functionality
+ * @param {string} category - kategori filter
+ */
+function setupPaginationButtons(category) {
+    // For index.html (applications)
+    const prevBtn = document.getElementById('prevBtn')
+    const nextBtn = document.getElementById('nextBtn')
+    
+    // For videos.html (games)
+    const prevBtn2 = document.getElementById('prevBtn2')
+    const nextBtn2 = document.getElementById('nextBtn2')
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            // Handle previous page for applications
+            console.log('Previous page clicked (applications)')
+        })
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            // Handle next page for applications
+            console.log('Next page clicked (applications)')
+        })
+    }
+    
+    if (prevBtn2) {
+        prevBtn2.addEventListener('click', () => {
+            // Handle previous page for games
+            console.log('Previous page clicked (games)')
+        })
+    }
+    
+    if (nextBtn2) {
+        nextBtn2.addEventListener('click', () => {
+            // Handle next page for games
+            console.log('Next page clicked (games)')
+        })
+    }
+}
+
+/**
+ * Show pagination container based on category
+ * @param {string} category - kategori
+ */
+function showPagination(category) {
+    if (category === 'game') {
+        // For videos.html (games)
+        const paginationContainer2 = document.getElementById('paginationContainer2')
+        if (paginationContainer2) {
+            paginationContainer2.style.display = 'block'
+        }
+    } else {
+        // For index.html (applications)
+        const paginationContainer = document.getElementById('paginationContainer')
+        if (paginationContainer) {
+            paginationContainer.style.display = 'block'
+        }
     }
 }
 
@@ -724,9 +740,8 @@ window.PlayoraDB = {
     getApplicationById,
     getTotalApplications,
     renderApplications,
-    renderApplicationDetail,
     orderApplication,
-    // Admin functions
+    setupSearch,
     addApplication,
     updateApplication,
     deleteApplication,

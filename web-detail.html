@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Detail - Playora</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzAwN2JmZiIvPgo8cGF0aCBkPSJNOCAxMmg0djRIOHYtNHptNiAwaDR2NGgtNHYtNHptNiAwaDR2NGgtNHYtNHpNOCAxOGg0djRIOHYtNHptNiAwaDR2NGgtNHYtNHptNiAwaDR2NGgtNHYtNHoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="css/templatemo-style.css">
+    <!-- Supabase CDN -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-film mr-2"></i>
+                Playora
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-1" href="index.html">Aplikasi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-2" href="videos.html">Games</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-3 active" href="web.html">Web</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-4" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-5" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Loading State -->
+    <div id="loadingDetail" class="loading-detail">
+        <div class="text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <p class="mt-3">Loading web details...</p>
+        </div>
+    </div>
+
+    <!-- Error State -->
+    <div id="errorDetail" class="error-detail" style="display: none;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center">
+                    <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                    <h3>Web Not Found</h3>
+                    <p class="text-muted">The web item you're looking for doesn't exist or has been removed.</p>
+                    <a href="web.html" class="btn btn-primary">Back to Web Gallery</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="webDetailContent" style="display: none;">
+        <div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll" data-image-src="img/hero.jpg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h1 id="webTitle" class="tm-hero-title">Web Detail</h1>
+                        <p id="webCategory" class="tm-hero-subtitle">Category</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid tm-container-content tm-mt-60">
+            <div class="row mb-4">
+                <div class="col-xl-8 col-lg-7 col-md-6 col-sm-12">
+                    <div id="webScreenshots" class="mb-4">
+                        <!-- Screenshots will be loaded here -->
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12">
+                    <div class="tm-bg-gray tm-video-details">
+                        <div class="text-center mb-5">
+                            <h2 id="webDetailTitle" class="tm-text-primary tm-video-title">Web Title</h2>
+                        </div>
+                        <div class="tm-video-description-box">
+                            <h3 class="tm-video-title tm-text-primary">Description</h3>
+                            <p id="webDescription" class="tm-video-description">Web description will be loaded here...</p>
+                        </div>
+                        <div class="tm-video-description-box">
+                            <h3 class="tm-video-title tm-text-primary">Details</h3>
+                            <div class="tm-video-info">
+                                <div class="mb-3">
+                                    <span class="tm-text-gray-light">Category:</span>
+                                    <span id="webDetailCategory" class="tm-text-primary">-</span>
+                                </div>
+                                <div class="mb-3">
+                                    <span class="tm-text-gray-light">Price:</span>
+                                    <span id="webPrice" class="tm-text-primary font-weight-bold">-</span>
+                                </div>
+                                <div class="mb-3">
+                                    <span class="tm-text-gray-light">Developer:</span>
+                                    <span id="webDeveloper" class="tm-text-primary">Playora Team</span>
+                                </div>
+                                <div class="mb-3">
+                                    <span class="tm-text-gray-light">Release Date:</span>
+                                    <span id="webReleaseDate" class="tm-text-primary">-</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-4">
+                            <button id="orderBtn" class="btn btn-primary btn-lg tm-btn-big">
+                                <i class="fas fa-shopping-cart mr-2"></i>
+                                Order Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid tm-bg-gray tm-text-gray tm-footer">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-12 px-5 tm-footer-content">
+                <ul class="tm-footer-links pl-0">
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Support</a></li>
+                    <li><a href="#">Privacy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-12 px-5 tm-footer-content">
+                <p class="mb-0 mt-2 tm-text-gray">Copyright &copy; 2024 Playora App Store</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/plugins.js"></script>
+    <script src="js/database.js"></script>
+    <script>
+        // Get web ID from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const webId = urlParams.get('id');
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (webId) {
+                loadWebDetail(webId);
+            } else {
+                showError();
+            }
+        });
+
+        async function loadWebDetail(id) {
+            try {
+                // Load web detail from database
+                const { data, error } = await supabase
+                    .from('applications')
+                    .select('*')
+                    .eq('id', id)
+                    .eq('category', 'web')
+                    .single();
+
+                if (error || !data) {
+                    console.error('Error loading web detail:', error);
+                    showError();
+                    return;
+                }
+
+                displayWebDetail(data);
+            } catch (error) {
+                console.error('Error in loadWebDetail:', error);
+                showError();
+            }
+        }
+
+        function displayWebDetail(web) {
+            // Hide loading, show content
+            document.getElementById('loadingDetail').style.display = 'none';
+            document.getElementById('webDetailContent').style.display = 'block';
+
+            // Update page title and meta
+            document.title = `${web.name} - Playora Web`;
+            document.getElementById('webTitle').textContent = web.name;
+            document.getElementById('webCategory').textContent = web.subcategory || 'Website';
+            document.getElementById('webDetailTitle').textContent = web.name;
+            document.getElementById('webDescription').textContent = web.description || 'High-quality website or template';
+            document.getElementById('webDetailCategory').textContent = web.subcategory || 'Website';
+            document.getElementById('webPrice').textContent = web.price ? `Rp ${parseInt(web.price).toLocaleString('id-ID')}` : 'Free';
+            document.getElementById('webDeveloper').textContent = web.developer || 'Playora Team';
+            document.getElementById('webReleaseDate').textContent = formatDate(web.created_at);
+
+            // Display main image
+            const screenshotsContainer = document.getElementById('webScreenshots');
+            if (web.image_url) {
+                screenshotsContainer.innerHTML = `
+                    <div class="screenshot-wrapper">
+                        <img src="${web.image_url}" alt="${web.name} Preview" class="img-fluid rounded detail-screenshot">
+                    </div>
+                `;
+            } else {
+                screenshotsContainer.innerHTML = `
+                    <div class="screenshot-wrapper text-center p-5 bg-light rounded">
+                        <i class="fas fa-image fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">No preview available</p>
+                    </div>
+                `;
+            }
+
+            // Setup order button
+            document.getElementById('orderBtn').onclick = function() {
+                orderWeb(web.id, web.name);
+            };
+        }
+
+        function showError() {
+            document.getElementById('loadingDetail').style.display = 'none';
+            document.getElementById('errorDetail').style.display = 'block';
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('id-ID', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function orderWeb(webId, webName) {
+            // Simple order functionality - can be enhanced later
+            const message = `Halo, saya tertarik untuk memesan ${webName}. Mohon informasi lebih lanjut.`;
+            const whatsappUrl = `https://wa.me/6281234567890?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>

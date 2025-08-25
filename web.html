@@ -179,34 +179,53 @@
 
         async function loadWebItems() {
             try {
-                // For now, we'll use placeholder data
-                // In the future, this will load from Supabase database
-                allWebItems = [
-                    {
-                        id: 1,
-                        name: 'E-Commerce Template',
-                        category: 'template',
-                        price: 'Rp 150.000',
-                        image: 'img/img-01.jpg',
-                        description: 'Template e-commerce modern dengan fitur lengkap'
-                    },
-                    {
-                        id: 2,
-                        name: 'Portfolio Website',
-                        category: 'website',
-                        price: 'Rp 200.000',
-                        image: 'img/img-02.jpg',
-                        description: 'Website portfolio profesional untuk freelancer'
-                    },
-                    {
-                        id: 3,
-                        name: 'Blog Template',
-                        category: 'template',
-                        price: 'Rp 100.000',
-                        image: 'img/img-03.jpg',
-                        description: 'Template blog responsive dengan design modern'
-                    }
-                ];
+                // Load web items from Supabase database
+                const { data, error } = await supabase
+                    .from('applications')
+                    .select('*')
+                    .eq('category', 'web')
+                    .order('created_at', { ascending: false });
+                
+                if (error) {
+                    console.error('Database error:', error);
+                    // Fallback to placeholder data if database fails
+                    allWebItems = [
+                        {
+                            id: 1,
+                            name: 'E-Commerce Template',
+                            category: 'template',
+                            price: 'Rp 150.000',
+                            image: 'img/img-01.jpg',
+                            description: 'Template e-commerce modern dengan fitur lengkap'
+                        },
+                        {
+                            id: 2,
+                            name: 'Portfolio Website',
+                            category: 'website',
+                            price: 'Rp 200.000',
+                            image: 'img/img-02.jpg',
+                            description: 'Website portfolio profesional untuk freelancer'
+                        },
+                        {
+                            id: 3,
+                            name: 'Blog Template',
+                            category: 'template',
+                            price: 'Rp 100.000',
+                            image: 'img/img-03.jpg',
+                            description: 'Template blog responsive dengan design modern'
+                        }
+                    ];
+                } else {
+                    // Transform database data to match our format
+                    allWebItems = (data || []).map(item => ({
+                        id: item.id,
+                        name: item.name,
+                        category: item.subcategory || 'website',
+                        price: item.price ? `Rp ${parseInt(item.price).toLocaleString('id-ID')}` : 'Free',
+                        image: item.image_url || 'img/img-01.jpg',
+                        description: item.description || 'Website atau template berkualitas tinggi'
+                    }));
+                }
                 
                 filterAndDisplayWebItems();
             } catch (error) {

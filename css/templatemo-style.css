@@ -634,3 +634,74 @@ select:not([multiple]) {
 
     .tm-social-links li { margin-right: 3px; }
 }
+
+/* Detail Page Screenshot Styles */
+/* Pastikan ditempatkan di bagian bawah file agar override style sebelumnya */
+.app-icon {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Desktop and larger screens */
+@media (min-width: 992px) {
+    .app-icon {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+/* Tablet screens */
+@media (min-width: 768px) and (max-width: 991px) {
+    .app-icon {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+/* Mobile screens */
+@media (max-width: 767px) {
+    .app-icon {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto;
+    }
+    
+    .action-buttons {
+        text-align: center;
+    }
+    
+    .action-buttons .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 575px) {
+    .app-icon {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+.screenshot-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;   /* Rata tengah horizontal */
+}
+
+.detail-screenshot {
+    width: 100%;
+    max-width: 100%;
+    max-height: 500px;         /* Sesuaikan tinggi maksimum sesuai kebutuhan */
+    object-fit: contain;       /* Hindari cropping, jaga proporsi gambar */
+    object-position: center;   /* Pastikan center */
+    background-color: #f1f3f5; /* Warna latar belakang saat letterboxing */
+    border-radius: 12px;
+    display: block;
+    margin: 0 auto;
+}
+/* Anda boleh menyesuaikan max-height di atas untuk tinggi yang diinginkan */

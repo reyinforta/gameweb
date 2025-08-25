@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail - Playora App</title>
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzAwN2JmZiIvPgo8cGF0aCBkPSJNOCAxMmg0djRIOHYtNHptNiAwaDR2NGgtNHYtNHptNiAwaDR2NGgtNHYtNHpNOCAxOGg0djRIOHYtNHptNiAwaDR2NGgtNHYtNHptNiAwaDR2NGgtNHYtNHoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzAwN2JmZiIvPgo8cGF0aCBkPSJNOCAxMmg0djRIOHYtNHptNiAwaDR2NGgtNHYtNHptNiAwaDR2NGgtNHYtNHpNOCAxOGg0djRIOHYtNHptNiAwaDR2NGgtNHYtNHptNiAwaDR2NGgtNHYtNHoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="fontawesome/css/all.min.css">
     <link rel="stylesheet" href="css/templatemo-style.css">
@@ -101,7 +101,7 @@
         <div class="container mt-4">
             <div class="row">
                 <div class="col-md-4 text-center mb-4">
-                    <img id="appIcon" src="" alt="App Icon" class="app-icon" style="width: 200px; height: 200px; border-radius: 15px;">
+                    <img id="appIcon" src="" alt="App Icon" class="app-icon">
                 </div>
                 <div class="col-md-8">
                     <h1 id="appTitle" class="mb-2 tm-text-primary"></h1>
@@ -271,15 +271,10 @@
                 $('#appFeatures').html(featuresHtml);
             }
             
-            // Screenshots - display main image
-            if (app.detail_image_url) {
-                $('#appScreenshots').html(`<img src="${app.detail_image_url}" alt="${app.title} Screenshot" class="img-fluid rounded" style="width: 100%; max-height: 400px; object-fit: cover;">`);
-            } else {
-                $('#appScreenshots').html(`<img src="${app.image_url}" alt="${app.title} Screenshot" class="img-fluid rounded" style="width: 100%; max-height: 400px; object-fit: cover;">`);
-            }
+            $('#appScreenshots').html('');
             
             // Added date
-            const currentDate = new Date().toLocaleDateString('id-ID', { 
+            const currentDate = new Date().toLocaleDateString('id-ID', {
                 day: 'numeric', 
                 month: 'long', 
                 year: 'numeric' 
